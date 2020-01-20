@@ -1,7 +1,7 @@
-//*Usar arreglos dinamicos para almacenar la cantidad de ordenes
+//*Usar arreglos dinamicos para almacenar la cantidad de ordenes. Hecho.
 // *un número único y correlativo en el que las órdenes se realizan. 
 // *Agregar al menú principal una opción para buscar una orden 
-//  según el nombre de la persona que la realizó. 
+//  según el nombre de la persona que la realizó.  Hecho, o algo asi.
 //Personal note: Faltan hacer unas funciones, por eso el menu tiene error. 
 
 #include <iostream>
@@ -33,6 +33,14 @@ int password();
 void restaurant();
 //Prototipo a domicilio
 void domicilio();
+//Prototipo de pedidos a domicilio
+void showOrders(int* B, int numOrdenes);
+//Prototipo de pedidos en el restaurante
+void showInOrders(int* A, int numOrdenes);
+//Prototipo de mostrar ventas
+void showSales(int* A, int* B);
+//Prototipo buscar ordenes
+void searchOrder(int* A, int* B);
 
 string user;
 AttheTavern info;
@@ -71,7 +79,7 @@ cout << "Ingrese la contrasena: ";
 // 1. Da error porque no se puede hacer cin a un arreglo sin indicar posicion
 // 2. Se pierde el dato de la contraseña correcta
 // Recomendacion: usar arreglo auxiliar
-cin >> pssw;
+cin >> pssw[i];
 if(pssw == "2darray"){
         // pssw es un arreglo, no se puede comparar con una cadena
       cout << "\nAcceso concedido \n";
@@ -84,7 +92,7 @@ if(pssw == "2darray"){
 
 //Funcion En restaurante
 // Segun la logica implementada, recibir A esta de mas
-void restaurant(int* A){
+void restaurant(){ 
     cout << "Numero de ordenes a ingresar: "; cin >> numOrders;
     A = new int[numOrders];
 
@@ -92,45 +100,73 @@ void restaurant(int* A){
     cout << "Ingrese el nombre de la persona que realizo la reserva: ";
     getline(cin, info.nameReservations[i]); cout << endl;
     cout << "Cantidad de personas por mesa?";  cin >> info.peoplePertable[i]; cout << endl;
-    cout << "Por favor eliga un plato principal entre pizza, ensalada o pasta: "; cin >> info.mainCourse;  cout << endl;
-    cout << "Por favor eliga entre nuestras entradas de quesadillas o nachos: "; cin >> info.food; cout << endl;
-    cout << "Por favor eliga entre gaseosa o té: "; cin >> info.drinks; cout << endl;
+    cout << "Por favor eliga un plato principal entre pizza, ensalada o pasta: "; cin >> info.mainCourse[i];  cout << endl;
+    cout << "Por favor eliga entre nuestras entradas de quesadillas o nachos: "; cin >> info.food[i]; cout << endl;
+    cout << "Por favor eliga entre gaseosa o té: "; cin >> info.drinks[i]; cout << endl;
     cout << "Su total a pagar es de $22.75" << endl;
     cout << "Ingrese su forma de pago: ";
-    cin >> info.TypeofPayment;
+    cin >> info.TypeofPayment[i];
     }
 }
 
 //Funcion a domicilio
 // Segun la logica implementada, recibir B esta de mas
-void domicilio(int* B){
+void domicilio(){
     cout << "Numero de ordenes a ingresar: "; cin >> numOrders;
     B = new int[numOrders];
 
     for(int i = 0; i < numOrders; i++){ }
     cout << "Nombre de la persona que realizo el pedido: ";
-    getline(cin, add.name); cout << endl;
+    getline(cin, add.name[i]); cout << endl;
     cout << "Direccion: ";  
-    getline(cin, add.personalAddress.address); cout << endl;  //Revisar el subregistro
+    getline(cin, add.personalAddress.address[i]); cout << endl; 
     cout << "Numero de telefono: ";  
-    cin >> add.phoneNumber; cout << endl;
-    cout << "Por favor eliga un plato principal entre pizza, ensalada o pasta: "; cin >> add.food;  cout << endl;
-    cout << "Por favor eliga entre nuestras entradas de quesadillas o nachos: "; cin >> add.mainCourse; cout << endl;
-    cout << "Por favor eliga entre gaseosa o té: "; cin >> add.drinks; cout << endl;
+    cin >> add.phoneNumber[i]; cout << endl;
+    cout << "Por favor eliga un plato principal entre pizza, ensalada o pasta: "; cin >> add.food[i];  cout << endl;
+    cout << "Por favor eliga entre nuestras entradas de quesadillas o nachos: "; cin >> add.mainCourse[i]; cout << endl;
+    cout << "Por favor eliga entre gaseosa o té: "; cin >> add.drinks[i]; cout << endl;
     cout << "Su total a pagar es de $28.25" << endl;
     cout << "Ingrese su forma de pago: ";
-    cin >> add.TypePayment;
+    cin >> add.TypePayment[i];
     }
 }
 
+//Funcion mostrar pedidos a domicilio
+void showOrders(int* B, int numOrdenes){
+    for(int i = 0; i < numOrders; i++){
+        cout << B[i] << endl;
+    }
+}
+
+//Funcion mostrar pedidos en el restaurante
+void showInOrders(int* A, int numOrdenes){
+    for(int i = 0; i < numOrders; i++){
+        cout << A[i] << endl;
+    }
+}
+
+//Funcion mostrar las ventas
+void showSales(int* A, int* B){
+
+}
+
+//Funcion buscar ordenes
+void searchOrder(int* A, int* B){
+    for(int i = 0; i < numOrders; i++){
+        cout << "Pedidos en el restaurante";
+        cout << info.nameReservations[i] << endl;
+        cout << "Pedidos a domicilio";
+        cout << add.name[i] << endl;
+
+    }
+}
 
 //Funcion Menu
 void mainMenu(){
 
-// Al ser un ciclo while y no do while, debe inicializarse opcion, como recomendacion usar do-while para menu
-int opcion;
-while(opcion!=7){
-    
+bool continuar = true;
+    do{
+        int opcion = 0;
 cout<<"\n\t\t\t\t*************************";
 cout<<"\n\t\t\t\t El Tavern ";
 cout<<"\n\t\t\t\t      * MENU PRINCIPAL *";
@@ -144,35 +180,26 @@ cout<<"\n\t\t\t6.Buscar orden";
 cout<<"\n\t\t\t7.Salir";
 cout<<"\n\n\t\t\tElija una opcion: ";
 cin>>opcion;
+        cin.ignore();
+        
+        switch(opcion){
+            switch(opcion){
 
-switch(opcion){
+ case 1: domicilio(); break;
 
-case 1: domicilio();
-break;
+ case 2: restaurant(); break;
 
-case 2: restaurant();
-break;
+ case 3: showOrders(B, numOrders); break;
 
-case 3: showOrders();
-break;
+ case 4: showInOrders(A, numOrders); break;
 
-case 4: showInOrders();
-break;
+ case 5: showSales(A, B); break;
 
-case 5: showSales();
-break;
+ case 6: searchOrder(A, B); break;
 
-case 6: searchOrder();
-break;
-
-case 7: break;
-
-default:
-// Verificar que la cantidad de corchetes este correcta
-{
-cout<<"\n\n\t\t\tOpcion invalida";
-cout<<"\n\t\t\tPulse una tecla para continuar";
-            }
+ case 7: continuar = false;
         }
-    }
-}
+    }while(continuar){ ;
+
+        }
+    
