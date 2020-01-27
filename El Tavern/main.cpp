@@ -5,29 +5,10 @@ using namespace std;
 //declara define
 #define PASSWORD "2darray"
 
-enum mainCourse
-{
-    pizza,
-    pasta,
-    lasgna
-};
-enum drink
-{
-    te,
-    soda,
-    agua
-};
-enum food
-{
-    garlicBread,
-    cheeseSticks,
-    pizzaRolls
-};
-enum paymentType
-{
-    cash,
-    card
-};
+enum mainCourse{pizza, pasta, lasgna};
+enum drink{icedTea, soda, beer};
+enum food{garlicBread, cheeseSticks, pizzaRolls};
+enum paymentType{cash, card};
 
 struct address
 {
