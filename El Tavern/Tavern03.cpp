@@ -1,5 +1,5 @@
 //Personal note: tomar en cuenta el cambio de menu y el cambio de usuario
-//ACTUALIZADO
+
 #include <iostream>  //Entrada y salida en consola
 #include <string>   //Permite el uso de strings
 #include <vector>   //Permite el uso de vectores sin necesidad de inicializar los nodos desde cero
@@ -41,6 +41,9 @@ struct TakeOut
     int finishedOrders;
 };
 typedef struct TakeOut Delivery;
+//Declara vector
+vector <Delivery> aDelivery;
+
 //Registro para pedidos en el restaurante
 struct houseOrder
 {
@@ -49,8 +52,7 @@ struct houseOrder
     int finishedOrders;
 };
 typedef struct houseOrder Restaurant;
-
-vector <Delivery> aDelivery;
+//Decalara vector
 vector <Restaurant> aRestaurant;
 
 //Prototipo de funcion para usuario
@@ -66,11 +68,11 @@ void showOrders();
 //Prototipo de pedidos en el restaurante
 void showInOrders();
 //Funcion tiempo de espera a domicilio
-int showTime(Delivery aDelivery, int numOrders, int aux);
+int showTime(Delivery aDelivery, int aux);
 //Funcion tiempo de espera en restaurante
-int showTime(Restaurant aRestaurant, int numOrders, int aux);
+int showTime(Restaurant aRestaurant, int aux);
 //Prototipo de buscar una order por nombre en restaurante
-void searchByName(Restaurant aRestaurant, int numOrders);
+void searchByName(Restaurant aRestaurant);
 //Prototipo de buscar una order por nombre a domicilio
 void searchByName(Delivery aDelivery, int numOrders);
 
@@ -105,20 +107,18 @@ int main(){
         
         switch(opcion){
 
-			 case 1: domicilio() ; break;    //Revisar los parametros
-			 case 2: restaurant(); break;
-			 case 3: showOrders(); break;
-			 case 4: showInOrders(); break;
-//			 case 5: packOffDelivery(); break;
-//			 case 6: packOffHouse(); break;
-//			 case 7: showTime(); break;
-//			 case 8: showTime(); break;
-//			 case 9: searchByName(); break;
-//			 case 10: searchByName(); break;
-//			 case 11: cancel(); break;   //Esta solo la va a poder ver el admnistrador 
-//			 case 12: totalSales(); break;
-//			 case 13: changeUser(); break;
-//			 case 14: continuar = false;
+ case 1: domicilio(); break;    //Revisar los parametros
+ case 2: restaurant(); break;
+ case 3: showOrders(); break;
+ case 4: showInOrders(); break;
+ case 5: packOffDelivery(); break;
+ case 6: packOffHouse(); break;
+ case 7: showTime(); break;
+ case 8: showTime(); break;
+ case 9: cancel(); break;   //Esta solo la va a poder ver el admnistrador 
+ case 10: totalSales(); break;
+ case 11: changeUser(); break;
+ case 12: continuar = false;
         }
     }while(option != 0);
 
@@ -171,12 +171,10 @@ bool logInUser(void){
     cout << "6. Despachar ordenes en restaurante" << endl;
     cout << "7. Ver tiempo de espera a domicilio" << endl;
     cout << "8. Ver tiempo de espera en restaurante" << endl;
-    cout << "9. Buscar una orden por nombre en restaurnte" << endl;
-    cout << "10. Buscra una orden por nombre a domicilio" << endl;
-    cout << "11. Cancelar una orden" << endl;
-    cout << "12. Calcular el total de ventas" << endl;
-    cout << "13. Cambiar de usuario" << endl;
-    cout << "14. Salir" << endl;
+    cout << "9. Cancelar una orden" << endl;
+    cout << "10. Calcular el total de ventas" << endl;
+    cout << "11. Cambiar de usuario" << endl;
+    cout << "12. Salir" << endl;
     cout << "Digite su opcion: " << endl;
 }
 
@@ -336,8 +334,6 @@ void domicilio(){
         else if(aux == 2)
             order.deliveryInfo.pDrink = soda;
         else
-            order.deliveryInfo.pDrink = icedTea;
-
         order.deliveryInfo.idOrder = idOrder++;
         
         cout << "Tipo de pago" << endl;
@@ -359,13 +355,12 @@ void domicilio(){
 }
 
 //Funcion mostrar pedidos a domicilio
-
 void showOrders(){
     for(int i = 0; i < aDelivery.size(); i++){
         cout << aDelivery[i].deliveryInfo.name << endl; 
         cout << aDelivery[i].deliveryInfo.pCourse << endl;  
-         cout << aDelivery[i].deliveryInfo.pDrink << endl;
-          cout << aDelivery[i].deliveryInfo.pFood << endl;
+        cout << aDelivery[i].deliveryInfo.pDrink << endl;
+        cout << aDelivery[i].deliveryInfo.pFood << endl;
     }
 }
 
@@ -380,14 +375,13 @@ void showInOrders(){
 }
 
 //Funcion tiempo de espera a domicilio
-
 int showTime(Delivery, int numOrders, int aux){
     Delivery order;
     if(aux == numOrders){
         return aux;
     }
     else{
-       // return (order[aux].deliveryInfo.pCourse * 1.5 + order[aux].deliveryInfo.pFood * 1.10 + array[aux].deliveryInfo.pDrink * 1.35) + 15;
-        //cout << "El total del tiempo de espera (en minutos) es: " << showTime(array, numOrders, aux + 1);
+        return (order.deliveryInfo.pCourse * 1.5 + order.deliveryInfo.pFood * 1.10 + order.deliveryInfo.pDrink * 1.35) + 15;
+        cout << "El total del tiempo de espera (en minutos) es: " << showTime(numOrders, aux + 1);
     }
 }

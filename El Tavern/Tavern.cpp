@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
-#include <queue>
+#include <vector>
+#include <algorithm>
 using namespace std;
 
 //declara define
@@ -43,8 +44,8 @@ struct houseOrder
     int finishedOrders;
 };
 
-queue <houseOrder> queueRestaurant;
-queue <TakeOut> queueDelivery;
+vector <houseOrder> Restaurant;
+vector <TakeOut> Delivery;
 
 
 //variables globales
@@ -252,7 +253,7 @@ void restaurant(houseOrder *array){
         cout << "Monto: $"; cin >> array[i].houseInfo.bill;
         cin.ignore();
 
-        queueRestaurant.push(aux);  //Mete las ordenes a la cola del restaurante //Check why is it wrong
+       
 
 
     }
