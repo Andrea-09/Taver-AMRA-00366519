@@ -80,7 +80,7 @@ void packOffDelivery();
 //Funcion de despacho de ordenes en el restaurante
 void packOffHouse();
 //Funcion para cancelar ordenes
-void cancel();
+int cancel();
 
 
 //variables globales
@@ -445,8 +445,14 @@ void packOffHouse(){
 }
 
 //Funcion para cancelar una orden
-void cancel(){
-    
+int cancel(Delivery aDelivery, Restaurant aRestaurant, int aux, int pos){
+    if(aDelivery.empty || aRestaurant.empty)
+    return 0;
+    if(aDelivery.size() == aux || Restaurant.size() == aux){
+        return aux;
+    }
+    else 
+    if()
 }
 
 
