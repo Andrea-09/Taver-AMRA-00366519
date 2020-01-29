@@ -9,6 +9,7 @@ using namespace std;
 //declarar define para la contrasena
 #define PASSWORD "2darray"
 
+//Enumeracion del menu
 enum mainCourse{pizza, pasta, lasagna};
 enum drink{icedTea, soda, beer};
 enum food{garlicBread, cheeseSticks, pizzaRolls};
@@ -20,6 +21,7 @@ struct address{
     int houseNumber;
 };
 typedef struct address Address;
+
 //Registro de informacion general para los pedidos
 struct mainInfo
 {
@@ -32,6 +34,7 @@ struct mainInfo
     float bill;
 };
 typedef struct mainInfo MainInfo;
+
 //Registro para pedidos a domicilio
 struct TakeOut
 {
@@ -41,6 +44,7 @@ struct TakeOut
     int finishedOrders;
 };
 typedef struct TakeOut Delivery;
+
 //Registro para pedidos en el restaurante
 struct houseOrder
 {
@@ -50,7 +54,9 @@ struct houseOrder
 };
 typedef struct houseOrder Restaurant;
 
+//Vector Delivery
 vector <Delivery> aDelivery;
+//Vector Restaurant
 vector <Restaurant> aRestaurant;
 
 //Prototipo de funcion para usuario
@@ -66,15 +72,15 @@ void showOrders();
 //Prototipo de pedidos en el restaurante
 void showInOrders();
 //Funcion tiempo de espera a domicilio
-int showTime(Delivery aDelivery, int numOrders, int aux);
+void showTime(Delivery, int aux);
 //Funcion tiempo de espera en restaurante
-int showTime(Restaurant aRestaurant, int numOrders, int aux);
-//Prototipo de buscar una order por nombre en restaurante
-void searchByName(Restaurant aRestaurant, int numOrders);
-//Prototipo de buscar una order por nombre a domicilio
-void searchByName(Delivery aDelivery, int numOrders);
-
-
+void showTime(Restaurant, int aux);
+//Funcion de despacho de ordenes a domicilio
+void packOffDelivery();
+//Funcion de despacho de ordenes en el restaurante
+void packOffHouse();
+//Funcion para cancelar ordenes
+void cancel();
 
 
 //variables globales
@@ -86,7 +92,7 @@ float priceGarlicBread = 3.99, pricePizzaRolls = 4.99, priceCheeseSticks = 3.75;
 float priceSoda = 0.95, priceBeer = 1.99, priceIcedTea = 1.15;
 
 
-
+//Inicio del programa
 int main(){
 
     int option = 0;
@@ -109,18 +115,16 @@ int main(){
 			 case 2: restaurant(); break;
 			 case 3: showOrders(); break;
 			 case 4: showInOrders(); break;
-//			 case 5: packOffDelivery(); break;
-//			 case 6: packOffHouse(); break;
-//			 case 7: showTime(); break;
-//			 case 8: showTime(); break;
-//			 case 9: searchByName(); break;
-//			 case 10: searchByName(); break;
-//			 case 11: cancel(); break;   //Esta solo la va a poder ver el admnistrador 
-//			 case 12: totalSales(); break;
-//			 case 13: changeUser(); break;
-//			 case 14: continuar = false;
+			 case 5: packOffDelivery(); break;
+			 case 6: packOffHouse(); break;
+	//		 case 7: showTime(aDelivery, aux); break;
+	//		 case 8: showTime(aRestaurant, aux); break;
+//			 case 9: cancel(); break;   //Esta solo la va a poder ver el admnistrador 
+//			 case 10: totalSales(); break;
+//			 case 11: changeUser(); break;
+//			 case 12: continuar = false;
         }
-    }while(option != 0);
+    }while(option != 12);
 
 
     return 0;
@@ -171,12 +175,10 @@ bool logInUser(void){
     cout << "6. Despachar ordenes en restaurante" << endl;
     cout << "7. Ver tiempo de espera a domicilio" << endl;
     cout << "8. Ver tiempo de espera en restaurante" << endl;
-    cout << "9. Buscar una orden por nombre en restaurnte" << endl;
-    cout << "10. Buscra una orden por nombre a domicilio" << endl;
-    cout << "11. Cancelar una orden" << endl;
-    cout << "12. Calcular el total de ventas" << endl;
-    cout << "13. Cambiar de usuario" << endl;
-    cout << "14. Salir" << endl;
+    cout << "9. Cancelar una orden" << endl;
+    cout << "10. Calcular el total de ventas" << endl;
+    cout << "11. Cambiar de usuario" << endl;
+    cout << "12. Salir" << endl;
     cout << "Digite su opcion: " << endl;
 }
 
@@ -381,13 +383,71 @@ void showInOrders(){
 
 //Funcion tiempo de espera a domicilio
 
-int showTime(Delivery, int numOrders, int aux){
-    Delivery order;
-    if(aux == numOrders){
-        return aux;
-    }
-    else{
-       // return (order[aux].deliveryInfo.pCourse * 1.5 + order[aux].deliveryInfo.pFood * 1.10 + array[aux].deliveryInfo.pDrink * 1.35) + 15;
-        //cout << "El total del tiempo de espera (en minutos) es: " << showTime(array, numOrders, aux + 1);
+void showTime(Delivery, int aux){
+    int suma = 0;
+    for(Delivery aux : aDelivery){    //foreach solo se puede usar en vectores, accede a un elemento del vector
+                                     //sin tener que recorrer todo el vector
+
+        suma += (aux.deliveryInfo.pCourse * 1.5 + aux.deliveryInfo.pFood * 1.10 + aux.deliveryInfo.pDrink * 1.35) + 15;
+        cout << "El tiempo de espera de su orden es de " << suma << endl;
+
     }
 }
+
+//Funcion tiempo de espera en el restaurante
+void showTime(Restaurant, int aux){
+    int suma = 0;
+    for(Restaurant aux : aRestaurant){
+        suma += (aux.houseInfo.pCourse * 1.5 + aux.houseInfo.pFood * 1.10 + aux.houseInfo.pDrink * 1.35);
+        cout << "El tiempo de espera de su orden es de " << suma << endl;
+
+    }
+}
+
+//Funcion de despacho de ordenes a domicilio
+void packOffDelivery(){
+    string orderName;
+
+    cout << "Ingrese el nombre de la orden a despachar: "; 
+    getline(cin, orderName); 
+    for(auto iter = aDelivery.begin(); iter != aDelivery.end(); ++iter){
+        if(iter->deliveryInfo.name== orderName){
+            iter = aDelivery.erase(iter);
+            cout << "La orden ha sido despachada.\n";
+            break;
+            }   
+
+    cout << "Pedidos actuales: ";
+    for (int i = 0; i < aDelivery.size(); i++){ 
+        cout << aDelivery[i].deliveryInfo.name << "  "; 
+        }
+    }
+}
+
+//Funcion de despacho de ordenes en el restaurante
+void packOffHouse(){
+    string orderName;
+
+    cout << "Ingrese el nombre de la orden a despachar: "; 
+    getline(cin, orderName); 
+    for(auto iter = aRestaurant.begin(); iter != aRestaurant.end(); ++iter){
+        if(iter->houseInfo.name== orderName){
+            iter = aRestaurant.erase(iter);
+            cout << "La orden ha sido despachada.\n";
+            break;
+            }   
+
+    cout << "Pedidos actuales: ";
+    for (int i = 0; i < aRestaurant.size(); i++){ 
+        cout << aRestaurant[i].houseInfo.name << "  "; 
+        }
+    }
+}
+
+//Funcion para cancelar una orden
+void cancel(){
+    
+}
+
+
+        
