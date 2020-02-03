@@ -1,9 +1,9 @@
 //Personal note: tomar en cuenta el cambio de menu y el cambio de usuario
-//ACTUALIZADO
+
 #include <iostream>  //Entrada y salida en consola
 #include <string>   //Permite el uso de strings
 #include <vector>   //Permite el uso de vectores sin necesidad de inicializar los nodos desde cero
-#include <algorithm>
+#include <algorithm>  //Permite usar funciones disenadas para vectores o listas como el for_each
 using namespace std;
 
 //declarar define para la contrasena
@@ -71,16 +71,18 @@ void domicilio();
 void showOrders();
 //Prototipo de pedidos en el restaurante
 void showInOrders();
-//Funcion tiempo de espera a domicilio
-void showTime(Delivery, int aux);
-//Funcion tiempo de espera en restaurante
-void showTime(Restaurant, int aux);
-//Funcion de despacho de ordenes a domicilio
+//Prototipo de funcion tiempo de espera a domicilio
+void showTime(vector <Delivery> aDelivery);
+//Prototitpo de funcion tiempo de espera en restaurante
+void showTime(vector <Restaurant> aRestaurant);
+//Prototipo de funcion de despacho de ordenes a domicilio
 void packOffDelivery();
-//Funcion de despacho de ordenes en el restaurante
+//Prototitpo de funcion de despacho de ordenes en el restaurante
 void packOffHouse();
-//Funcion para cancelar ordenes
+//Prototipo de funcion para cancelar ordenes
 int cancel();
+//Prototipo de funcion para ver el total de ventas
+float totalSales();
 
 
 //variables globales
@@ -100,8 +102,8 @@ int main(){
    if (logInUser() == false){
        return 0;
    }
-    
     bool continuar = true;
+
     do{
         
         int opcion = 0;
@@ -111,20 +113,20 @@ int main(){
         
         switch(opcion){
 
-			 case 1: domicilio() ; break;    //Revisar los parametros
+			 case 1: domicilio() ; break;    
 			 case 2: restaurant(); break;
 			 case 3: showOrders(); break;
 			 case 4: showInOrders(); break;
 			 case 5: packOffDelivery(); break;
 			 case 6: packOffHouse(); break;
-	//		 case 7: showTime(aDelivery, aux); break;
-	//		 case 8: showTime(aRestaurant, aux); break;
+		     case 7: showTime(aDelivery); break;
+    		 case 8: showTime(aRestaurant); break;
 //			 case 9: cancel(); break;   //Esta solo la va a poder ver el admnistrador 
-//			 case 10: totalSales(); break;
+			 case 10: totalSales(); break;
 //			 case 11: changeUser(); break;
-//			 case 12: continuar = false;
+			 case 12: continuar = false;
         }
-    }while(option != 12);
+    }while(continuar);
 
 
     return 0;
@@ -156,7 +158,7 @@ bool logInUser(void){
 
     case 'e':
     case 'E':
-       if(isAdmin = false){
+       if(isAdmin == false){
        return true;
         break;
     }
@@ -185,17 +187,18 @@ bool logInUser(void){
 //Funcion En restaurante
 void restaurant(){ 
     Restaurant order;
-    //Recorre todo el arreglo
-    for(int i = 0; i < aRestaurant.size(); i++){ 
+    
          int aux = 0;
         cout << "Nombre: "; getline(cin, order.houseInfo.name);
+        cout << "Cantidad de personas? "; cin >> order.pTable; cin.ignore();
+        cout << endl;
 
         cout << "Entrada" << endl;
-        cout << "1. Pan con ajo";
+        cout << "1. Pan con ajo\t";
         cout << priceGarlicBread << endl;
-        cout << "2. Pizza rolls";
+        cout << "2. Pizza rolls\t";
         cout << pricePizzaRolls << endl;
-        cout << "3. Palitos de queso";
+        cout << "3. Palitos de queso\t";
         cout << priceCheeseSticks << endl;
         cout << "Su opcion: "; cin >> aux;
         cin.ignore();
@@ -208,11 +211,11 @@ void restaurant(){
             order.houseInfo.pFood = cheeseSticks;
 
         cout << "Plato principal" << endl;
-        cout << "1. Pizza";
+        cout << "1. Pizza\t";
         cout << pricePizza << endl;
-        cout << "2. Pasta ";
+        cout << "2. Pasta\t";
         cout << pricePasta << endl;
-        cout << "3. Lasagna";
+        cout << "3. Lasagna\t";
         cout << priceLasagna << endl;
         cout << "Su opcion:\t"; cin >> aux;
         cin.ignore();
@@ -225,11 +228,11 @@ void restaurant(){
             order.houseInfo.pCourse = lasagna;
 
         cout << "Bebida" << endl;
-        cout << "1. Cerveza";
+        cout << "1. Cerveza\t";
         cout << priceBeer << endl;
-        cout << "2. Soda";
+        cout << "2. Soda\t";
         cout << priceSoda << endl;
-        cout << "3. Te helado";
+        cout << "3. Te helado\t";
         cout << priceIcedTea << endl;
         cout << "Su opcion:\t"; cin >> aux;
         cin.ignore();
@@ -257,9 +260,8 @@ void restaurant(){
         cout << "Monto: $"; cin >> order.houseInfo.bill;
         cin.ignore();
 
-        aRestaurant.insert(aRestaurant.end(), order);
+        aRestaurant.push_back(order);
 
-    }
 }
 
 //Funcion a domicilio
@@ -267,33 +269,32 @@ void domicilio(){
     Delivery order;
     int aux;
     
-    //Recorre todo el arreglo
-    for(int i = 0; i < aDelivery.size(); i++){ 
+    
     cout << "Nombre de la persona que realizo el pedido: ";
     getline(cin, order.deliveryInfo.name); 
-    cout << "Direccion: "; 
+    cout << "Direccion " << endl;
     cout << "Colonia: "; 
     getline(cin, order.deliveryAddress.street); cout << endl; 
     cout << "Municipio: "; 
     getline(cin, order.deliveryAddress.city); cout << endl; 
     cout << "Departamento: "; 
+    getline(cin, order.deliveryAddress.state); cout << endl; 
     cout << "No. casa: ";
     cin >> order.deliveryAddress.houseNumber;
     cin.ignore();
-    getline(cin, order.deliveryAddress.state); cout << endl; 
     cout << "Numero de telefono: ";  
     cin >> order.cellphone; cout << endl;
     //Toda la informacion se guarda en el arreglo
 
     
     cout << "Entrada" << endl;
-        cout << "1. Pan con Ajo"; 
+        cout << "1. Pan con Ajo\t"; 
         cout << priceGarlicBread << endl;
-        cout << "2. Palitos de queso";
+        cout << "2. Palitos de queso\t";
         cout << priceCheeseSticks << endl;
-        cout << "3. PIzza rolls";
+        cout << "3. PIzza rolls\t";
         cout << pricePizzaRolls << endl;
-        cout << "ingrese su opcion: ";
+        cout << "ingrese su opcion: \t";
         cin >> aux;
 
         //Guarda la opcion en el arreglo
@@ -305,11 +306,11 @@ void domicilio(){
             order.deliveryInfo.pFood = cheeseSticks;
 
         cout << "Plato principal" << endl;
-        cout << "1. Pizza";
+        cout << "1. Pizza\t";
         cout << pricePizza << endl;
-        cout << "2. Pasta";
+        cout << "2. Pasta\t";
         cout << pricePasta << endl;
-        cout << "3. Lasagna";
+        cout << "3. Lasagna\t";
         cout << priceLasagna << endl;
         cout << "Su opcion:\t"; cin >> aux;
         cin.ignore();
@@ -323,11 +324,11 @@ void domicilio(){
             order.deliveryInfo.pCourse = lasagna;
 
         cout << "Bebida" << endl;
-        cout << "1. Cerveza";
+        cout << "1. Cerveza\t";
         cout << priceBeer << endl;
-        cout << "2. Soda";
+        cout << "2. Soda\t";
         cout << priceSoda << endl;
-        cout << "3. Te helado";
+        cout << "3. Te helado\t";
         cout << priceIcedTea << endl;
         cout << "Su opcion:\t"; cin >> aux;
         cin.ignore();
@@ -356,50 +357,56 @@ void domicilio(){
         cout << "Monto: $"; cin >> order.deliveryInfo.bill;
         cin.ignore();
 
-         aDelivery.insert(aDelivery.end(), order);
-    }
+         aDelivery.push_back(order);
+    
 }
 
 //Funcion mostrar pedidos a domicilio
 
 void showOrders(){
     for(int i = 0; i < aDelivery.size(); i++){
-        cout << aDelivery[i].deliveryInfo.name << endl; 
-        cout << aDelivery[i].deliveryInfo.pCourse << endl;  
-         cout << aDelivery[i].deliveryInfo.pDrink << endl;
-          cout << aDelivery[i].deliveryInfo.pFood << endl;
+        cout << "Nombre: " << aDelivery[i].deliveryInfo.name << endl; 
+        cout << "Plato principal: " << aDelivery[i].deliveryInfo.pCourse << endl;  
+        cout << "Bebida: " << aDelivery[i].deliveryInfo.pDrink << endl;
+        cout << "Aperitivo: " << aDelivery[i].deliveryInfo.pFood << endl;
+        cout << "Numero de orden: " << aDelivery[i].deliveryInfo.idOrder << endl;
     }
 }
 
 //Funcion mostrar pedidos en el restaurante
 void showInOrders(){
     for(int i = 0; i < aRestaurant.size(); i++){
-        cout << aRestaurant[i].houseInfo.name << endl;
-        cout << aRestaurant[i].houseInfo.pCourse << endl;
-        cout << aRestaurant[i].houseInfo.pDrink << endl;
-        cout << aRestaurant[i].houseInfo.pFood << endl;
+        cout << "Nombre: " << aRestaurant[i].houseInfo.name << endl;
+        cout << "Cantidad de personas en la mesa: " << aRestaurant[i].pTable << endl; 
+        cout << "Plato principal: " << aRestaurant[i].houseInfo.pCourse << endl;
+        cout << "Bebida: " << aRestaurant[i].houseInfo.pDrink << endl;
+        cout << "Aperitivo: " << aRestaurant[i].houseInfo.pFood << endl;
+        cout << "Numero de orden: " << aRestaurant[i].houseInfo.idOrder << endl;
      } 
 }
 
-//Funcion tiempo de espera a domicilio
+//Ambas funciones para mostrar el tiempo estan sobrecargadas
 
-void showTime(Delivery, int aux){
+//Funcion tiempo de espera a domicilio
+void showTime(vector <Delivery> aDelivery){
     int suma = 0;
+    Delivery aux;
     for(Delivery aux : aDelivery){    //foreach solo se puede usar en vectores, accede a un elemento del vector
                                      //sin tener que recorrer todo el vector
 
         suma += (aux.deliveryInfo.pCourse * 1.5 + aux.deliveryInfo.pFood * 1.10 + aux.deliveryInfo.pDrink * 1.35) + 15;
-        cout << "El tiempo de espera de su orden es de " << suma << endl;
+        cout << "El tiempo de espera de su orden es de " << suma << " minutos." << endl;
 
     }
 }
 
 //Funcion tiempo de espera en el restaurante
-void showTime(Restaurant, int aux){
+void showTime(vector <Restaurant> aRestaurant){
+    Restaurant aux;
     int suma = 0;
     for(Restaurant aux : aRestaurant){
         suma += (aux.houseInfo.pCourse * 1.5 + aux.houseInfo.pFood * 1.10 + aux.houseInfo.pDrink * 1.35);
-        cout << "El tiempo de espera de su orden es de " << suma << endl;
+        cout << "El tiempo de espera de su orden es de " << suma << " minutos." << endl;
 
     }
 }
@@ -428,6 +435,7 @@ void packOffDelivery(){
 void packOffHouse(){
     string orderName;
 
+
     cout << "Ingrese el nombre de la orden a despachar: "; 
     getline(cin, orderName); 
     for(auto iter = aRestaurant.begin(); iter != aRestaurant.end(); ++iter){
@@ -444,16 +452,132 @@ void packOffHouse(){
     }
 }
 
-//Funcion para cancelar una orden
-int cancel(Delivery aDelivery, Restaurant aRestaurant, int aux, int pos){
-    if(aDelivery.empty || aRestaurant.empty)
-    return 0;
-    if(aDelivery.size() == aux || Restaurant.size() == aux){
-        return aux;
+// Funcion para cancelar una orden
+int cancel(){
+    int option;
+    string orderName;
+    bool found = true;
+
+    cout << "Desea cancelar una orden en restaurante o a domicilio (1 = restaurante y 2 = domicilio)\t";
+    cin >> option; cin.ignore();
+    cout << endl;
+
+    if(aDelivery.empty() || aRestaurant.empty()){
+        return 0;
     }
-    else 
-    if()
+    else if(option == 1){
+        cout << "Ingrese el nombre de la orden que desea eliminar: ";
+        getline(cin, orderName);
+    }
+    
 }
+   
+
+//Funcion recursiva para ver el total de ventas
+
+float totalSales(){
+   float sub = 0;
+   int option;
+   mainCourse dish;
+   food pFood;
+   drink pDrink;
+    
+   cout << "Desea ver el total de ventas en restaurante o a domicilio? (1 = domicilio y 2 = restaurante)\t";
+    cin >> option; cin.ignore();
+    cout << endl;
+
+   if(option == 1){
+        if(aDelivery.empty()){
+           return 0;
+       }
+       else{ 
+        switch(dish){
+           case pizza:
+               sub = 13.99;
+                break;
+            case pasta:
+                sub = 5.55;
+                break;
+            case lasagna:
+                sub = 6.25;
+                break;
+                }
+        switch(pFood){ 
+            case garlicBread:
+                sub = 3.99;
+                break;
+            case cheeseSticks:
+                sub = 3.75;
+                break;
+            case pizzaRolls:
+                sub = 4.99;
+                break;
+                }
+        switch(pDrink){ 
+            case icedTea:
+                sub = 1.15;
+                break;
+            case soda:
+                sub = 0.95;
+                break;
+            case beer:
+                sub = 1.99;
+                break;
+                }
+            return sub + totalSales();  //Agregar el 13% de IVA
+        }
+   }
+        
+    else if(option == 2){
+        if(aRestaurant.size()){
+            return 0;
+        }
+        else{ 
+        switch (dish){
+            case pizza:
+                sub = 13.99;
+                break;
+            case pasta:
+                sub = 5.55;
+                break;
+            case lasagna:
+                sub = 6.25;
+                break;
+        }
+        switch(pFood){ 
+            case garlicBread:
+                sub = 3.99;
+                break;
+            case cheeseSticks:
+                sub = 3.75;
+                break;
+            case pizzaRolls:
+                sub = 4.99;
+                break;
+                }
+        switch(pDrink){
+            case icedTea:
+                sub = 1.15;
+                break;
+            case soda:
+                sub = 0.95;
+                break;
+            case beer:
+                sub = 1.99;
+                break;
+            }
+        }
+        return sub + totalSales();  //Falta agregar el 13% de IVA
+    }
+
+}
+
+
+
+
+
+    
+
 
 
         
