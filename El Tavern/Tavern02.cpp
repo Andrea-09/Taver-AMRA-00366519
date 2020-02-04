@@ -41,7 +41,6 @@ struct TakeOut
     address deliveryAddress;
     int cellphone;
     mainInfo deliveryInfo;
-    int finishedOrders;
 };
 typedef struct TakeOut Delivery;
 
@@ -50,7 +49,6 @@ struct houseOrder
 {
     int pTable;
     mainInfo houseInfo;
-    int finishedOrders;
 };
 typedef struct houseOrder Restaurant;
 
@@ -80,9 +78,13 @@ void packOffDelivery();
 //Prototitpo de funcion de despacho de ordenes en el restaurante
 void packOffHouse();
 //Prototipo de funcion para cancelar ordenes
-int cancel();
+void cancel();
 //Prototipo de funcion para ver el total de ventas
 float totalSales();
+//Prototipo de menu de empleado
+void showMenuE();
+//Prototipo de cambio de usuario
+bool changeUser();
 
 
 //variables globales
@@ -98,6 +100,7 @@ float priceSoda = 0.95, priceBeer = 1.99, priceIcedTea = 1.15;
 int main(){
 
     int option = 0;
+    char aux;
 
    if (logInUser() == false){
        return 0;
@@ -121,9 +124,9 @@ int main(){
 			 case 6: packOffHouse(); break;
 		     case 7: showTime(aDelivery); break;
     		 case 8: showTime(aRestaurant); break;
-//			 case 9: cancel(); break;   //Esta solo la va a poder ver el admnistrador 
+			 case 9: cancel(); break;   //Esta solo la va a poder ver el admnistrador 
 			 case 10: totalSales(); break;
-//			 case 11: changeUser(); break;
+     		 case 11: changeUser(); break;
 			 case 12: continuar = false;
         }
     }while(continuar);
@@ -159,7 +162,25 @@ bool logInUser(void){
     case 'e':
     case 'E':
        if(isAdmin == false){
-       return true;
+           int opt;
+           bool continuar = true;
+           showMenuE(); cin >> opt; cin.ignore();
+           do{
+               switch(opt){
+
+			 case 1: domicilio() ; break;    
+			 case 2: restaurant(); break;
+			 case 3: showOrders(); break;
+			 case 4: showInOrders(); break;
+			 case 5: packOffDelivery(); break;
+			 case 6: packOffHouse(); break;
+		     case 7: showTime(aDelivery); break;
+    		 case 8: showTime(aRestaurant); break;
+			 case 9: totalSales(); break;
+     		 case 10: changeUser(); break;
+			 case 11: continuar = false;
+            }
+        }while(continuar);
         break;
     }
     return false;
@@ -369,6 +390,8 @@ void showOrders(){
         cout << "Plato principal: " << aDelivery[i].deliveryInfo.pCourse << endl;  
         cout << "Bebida: " << aDelivery[i].deliveryInfo.pDrink << endl;
         cout << "Aperitivo: " << aDelivery[i].deliveryInfo.pFood << endl;
+        cout << "Tipo de pago: " << aDelivery[i].deliveryInfo.pay << endl;
+        cout << "Monto a pagar: $" << aDelivery[i].deliveryInfo.bill << endl;
         cout << "Numero de orden: " << aDelivery[i].deliveryInfo.idOrder << endl;
     }
 }
@@ -381,6 +404,8 @@ void showInOrders(){
         cout << "Plato principal: " << aRestaurant[i].houseInfo.pCourse << endl;
         cout << "Bebida: " << aRestaurant[i].houseInfo.pDrink << endl;
         cout << "Aperitivo: " << aRestaurant[i].houseInfo.pFood << endl;
+        cout << "Tipo de pago: " << aRestaurant[i].houseInfo.pay << endl;
+        cout << "Monto a pagar: $" << aRestaurant[i].houseInfo.bill << endl;
         cout << "Numero de orden: " << aRestaurant[i].houseInfo.idOrder << endl;
      } 
 }
@@ -453,24 +478,66 @@ void packOffHouse(){
 }
 
 // Funcion para cancelar una orden
-int cancel(){
+void cancel(){
     int option;
-    string orderName;
+    int ID;
+    int confirm;
     bool found = true;
 
     cout << "Desea cancelar una orden en restaurante o a domicilio (1 = restaurante y 2 = domicilio)\t";
     cin >> option; cin.ignore();
     cout << endl;
 
-    if(aDelivery.empty() || aRestaurant.empty()){
-        return 0;
+     if(option == 1){
+        cout << "Ingrese el ID de la orden que desea eliminar: ";
+        cin >> ID; cin.ignore();
+        cout << endl;
+        for(int i = 0; i < aRestaurant.size(); i++){
+            if(aRestaurant[i].houseInfo.idOrder == ID){
+                found = true;
+                cout << "Desea eliminar esta orden? (1 = si, 2 = no)\n"; cin >> confirm; cin.ignore();
+                if(confirm == 1){
+                    for(auto iter = aRestaurant.begin(); iter != aRestaurant.end(); ++iter){
+                        if(iter->houseInfo.idOrder== ID){
+                        iter = aRestaurant.erase(iter);
+                        cout << "La orden ha sido eliminada.\n";
+                        break;
+                        }
+                    }  
+                }
+            }
+        }
+        if(found == false){
+            cout << "No se encontro la orden.\n";
     }
-    else if(option == 1){
-        cout << "Ingrese el nombre de la orden que desea eliminar: ";
-        getline(cin, orderName);
-    }
-    
 }
+
+    else if(option == 2 ){
+        cout << "Ingrese el ID de la orden que desea eliminar: ";
+        cin >> ID; cin.ignore();
+        cout << endl;
+        for(int i = 0; i < aDelivery.size(); i++){
+            if(aDelivery[i].deliveryInfo.idOrder == ID){
+                found = true;
+                cout << "Desea eliminar esta orden? (1 = si, 2 = no)\n"; cin >> confirm; cin.ignore();
+                if(confirm == 1){
+                    for(auto iter = aDelivery.begin(); iter != aDelivery.end(); ++iter){
+                        if(iter->deliveryInfo.idOrder== ID){
+                        iter = aDelivery.erase(iter);
+                        cout << "La orden ha sido eliminada.\n";
+                        break;
+                        }
+                    }  
+                }
+            }
+        }
+    }
+    if(found == false){
+            cout << "No se encontro la orden.\n";
+        }
+    }
+
+
    
 
 //Funcion recursiva para ver el total de ventas
@@ -572,7 +639,34 @@ float totalSales(){
 
 }
 
+//Muestra el menu que vera el empleado
+void showMenuE(){
+    cout << "******SISTEMA DE DESPACHO PIZZERIA TAVERN******" << endl;
+    cout << "1. Agregar ordenes a domicilio" << endl;
+    cout << "2. Agregar ordenes en restaurante" << endl;
+    cout << "3. Ver ordenes a domicilio" << endl;
+    cout << "4. Ver ordenes en restaurante" << endl;
+    cout << "5. Despachar ordenes a domicilio" << endl;
+    cout << "6. Despachar ordenes en restaurante" << endl;
+    cout << "7. Ver tiempo de espera a domicilio" << endl;
+    cout << "8. Ver tiempo de espera en restaurante" << endl;
+    cout << "9. Calcular el total de ventas" << endl;
+    cout << "10. Cambiar de usuario" << endl;
+    cout << "11. Salir" << endl;
+    cout << "Digite su opcion: " << endl;
+}
 
+//Funcion cambiar de usuario
+bool changeUser(){
+    int opt = 0;
+    
+    cout << "Desea cambiar de usuario? (1 = si, 2 = no)\n"; cin >> opt;
+    cin.ignore();
+
+    if(opt == 1){
+
+    }
+}
 
 
 
