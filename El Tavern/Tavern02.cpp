@@ -1,5 +1,4 @@
 
-//Agregar el 13% de IVA
 //Arregla el tiempo bien
 #include <iostream>  //Entrada y salida en consola
 #include <string>    //Permite el uso de strings
@@ -185,11 +184,11 @@ int main()
             cin.ignore();
             if (op == 1)
             {
-                cout << totalSales(0) << endl;
+                cout << "$" << ( totalSales(0) + (totalSales(0) * 0.13)) << endl;
             }
             else
             {
-                cout << TotalSales(0) << endl;
+                cout << "$" << ( TotalSales(0) + (TotalSales(0) * 0.13)) << endl;
             }
 
             break;
@@ -359,7 +358,7 @@ void restaurant()
     cin.ignore();
 
     order.houseInfo.time = (order.houseInfo.pCourse.size() * 1.5 + order.houseInfo.pFood.size() * 1.10 + order.houseInfo.pDrink.size() * 1.35);
-    cout << "El tiempo que se tarda es de " << order.houseInfo.time << " minutos.";
+    cout << "El tiempo que se tarda es de " << order.houseInfo.time << " minutos." << endl;
 
     aRestaurant.push_back(order);
     cout << endl;
@@ -374,20 +373,20 @@ void domicilio()
 
     cout << "Nombre de la persona que realizo el pedido: ";
     getline(cin, order.deliveryInfo.name);
-    cout << "Direccion " << endl;
-    cout << "Colonia: ";
+    cout << "Direccion \t";
+    cout << "Colonia: \t";
     getline(cin, order.deliveryAddress.street);
     cout << endl;
-    cout << "Municipio: ";
+    cout << "Municipio: \t";
     getline(cin, order.deliveryAddress.city);
     cout << endl;
-    cout << "Departamento: ";
+    cout << "Departamento: \t";
     getline(cin, order.deliveryAddress.state);
     cout << endl;
-    cout << "No. casa: ";
+    cout << "No. casa: \t";
     cin >> order.deliveryAddress.houseNumber;
     cin.ignore();
-    cout << "Numero de telefono: ";
+    cout << "Numero de telefono: \t";
     cin >> order.cellphone;
     cout << endl;
     //Toda la informacion se guarda en el arreglo
@@ -396,10 +395,11 @@ void domicilio()
     {
         cout << "Entrada" << endl;
         cout << "1. Pan con Ajo\t"; //display prices
-
+        cout << priceGarlicBread << endl;
         cout << "2. Palitos de queso\t";
-
+        cout << priceCheeseSticks << endl;
         cout << "3. PIzza rolls\t";
+        cout << pricePizzaRolls << endl;
         cout << "0. Salir\t";
 
         cout << "ingrese su opcion: \t";
@@ -784,7 +784,7 @@ float totalDish(vector<mainCourse> pCourse)
             break;
         }
     }
-    cout << total << endl;
+    cout << "$" << total << endl;
     return total;
 }
 
@@ -807,6 +807,6 @@ float totalDrink(vector<drink> pDrink)
             break;
         }
     }
-    cout << total << endl;
+    cout << "$" << total << endl;
     return total;
 }
