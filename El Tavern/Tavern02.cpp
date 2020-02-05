@@ -1,5 +1,5 @@
-//Personal note: TIEMPOOOOO DEL INT TIME WEEY
-
+//Personal note: TIEMPOOOOO DEL INT TIME 
+//Agregar el 13% de IVA
 #include <iostream>  //Entrada y salida en consola
 #include <string>    //Permite el uso de strings
 #include <vector>    //Permite el uso de vectores sin necesidad de inicializar los nodos desde cero
@@ -105,8 +105,14 @@ void cancel();
 float totalSales(int op, int pos);
 //Prototipo de funcion para ver total de ventas en restaurante
 float TotalSales(int op, int pos);
-//Prototipo de cambio de usuario
-bool changeUser();
+
+//Prototipo de funcion que suma las ventas de aperitivo
+float totalStarter(vector<food> pFood);
+//Prototipo de funcion que suma las ventas de plato principal
+float totalDish(vector<mainCourse> pCourse);
+//Prototipo de funcion que suma las ventas de las bebidas
+float totalDrink(vector<drink> pDrink);
+
 
 //variables globales
 bool isAdmin = false;
@@ -167,14 +173,14 @@ int main()
             break;
         case 9:
             if (!isAdmin) //Si no se accede como administrador
-                cout << "No se puede acceder a esta opcion, te me cuidas" << endl;
+                cout << "No se puede acceder a esta opcion." << endl;
             else
             {
                 cancel(); //Esta solo la va a poder ver el admnistrador
             }
             break;
         case 10:
-            cout << "Desea ver el total de ventas en restaurante o a domicilio? (1 = domicilio y 2 = restaurante)\t";
+            cout << "Desea ver el total de ventas en restaurante o a domicilio? (1 = domicilio y 2 = restaurante)\n";
             cin >> op;
             cin.ignore();
             if (op == 1)
@@ -236,18 +242,18 @@ bool logInUser(void)
 void showMenu(void)
 {
     cout << "******SISTEMA DE DESPACHO PIZZERIA TAVERN******" << endl;
-    cout << "1. Agregar ordenes a domicilio" << endl;
-    cout << "2. Agregar ordenes en restaurante" << endl;
-    cout << "3. Ver ordenes a domicilio" << endl;
-    cout << "4. Ver ordenes en restaurante" << endl;
-    cout << "5. Despachar ordenes a domicilio" << endl;
-    cout << "6. Despachar ordenes en restaurante" << endl;
-    cout << "7. Ver tiempo de espera a domicilio" << endl;
-    cout << "8. Ver tiempo de espera en restaurante" << endl;
-    cout << "9. Cancelar una orden" << endl;
-    cout << "10. Calcular el total de ventas" << endl;
-    cout << "11. Cambiar de usuario" << endl;
-    cout << "12. Salir" << endl;
+    cout << "1. Agregar ordenes a domicilio\t" << endl;
+    cout << "2. Agregar ordenes en restaurante\t" << endl;
+    cout << "3. Ver ordenes a domicilio\t" << endl;
+    cout << "4. Ver ordenes en restaurante\t" << endl;
+    cout << "5. Despachar ordenes a domicilio\t" << endl;
+    cout << "6. Despachar ordenes en restaurante\t" << endl;
+    cout << "7. Ver tiempo de espera a domicilio\t" << endl;
+    cout << "8. Ver tiempo de espera en restaurante\t" << endl;
+    cout << "9. Cancelar una orden\t" << endl;
+    cout << "10. Calcular el total de ventas\t" << endl;
+    cout << "11. Cambiar de usuario\t" << endl;
+    cout << "12. Salir\t" << endl;
     cout << "Digite su opcion: " << endl;
 }
 
@@ -273,7 +279,7 @@ void restaurant()
         cout << pricePizzaRolls << endl;
         cout << "3. Palitos de queso\t";
         cout << priceCheeseSticks << endl;
-        cout << "0. Salir" << endl;
+        cout << "0. Salir\t" << endl;
         cout << "Su opcion: ";
         cin >> aux;
         cin.ignore();
@@ -341,18 +347,22 @@ void restaurant()
     cout << "Su opcion:\t";
     cin >> aux;
     cin.ignore();
-    aux--;
 
-    order.houseInfo.pay.push_back(paymentType(aux));
+    if (aux == 1)
+        order.houseInfo.pay = card;
+    else
+        order.houseInfo.pay = cash;
+    aux--;
 
     cout << "Monto: $";
     cin >> order.houseInfo.bill;
     cin.ignore();
 
-    order.houseInfo.time += (order.houseInfo.pCourse * 1.5 + order.houseInfo.pFood * 1.10 + order.houseInfo.pDrink * 1.35);
+    order.houseInfo.time += (order.houseInfo.pCourse.size() * 1.5 + order.houseInfo.pFood.size() * 1.10 + order.houseInfo.pDrink.size() * 1.35);
     cout << "El tiempo que se tarda es de " << order.houseInfo.time << " minutos.";
 
     aRestaurant.push_back(order);
+    cout << endl;
 }
 
 //Funcion a domicilio
@@ -462,16 +472,21 @@ void domicilio()
     cin.ignore();
     aux--;
 
-    order.deliveryInfo.pay.push_back(paymentType(aux));
+    if (aux == 1)
+        order.deliveryInfo.pay = card;
+    else
+        order.deliveryInfo.pay = cash;
+
 
     cout << "Monto: $";
     cin >> order.deliveryInfo.bill;
     cin.ignore();
 
-    order.deliveryInfo.time += (order.deliveryInfo.pCourse * 1.5 + order.deliveryInfo.pFood * 1.10 + order.deliveryInfo.pDrink * 1.35);
+    order.deliveryInfo.time += ((order.deliveryInfo.pCourse.size() * 1.5 + order.deliveryInfo.pFood.size() * 1.10 + order.deliveryInfo.pDrink.size() * 1.35) + 15);
     cout << "El tiempo que se tarda es de " << order.deliveryInfo.time << " minutos.";
 
     aDelivery.push_back(order);
+    cout << endl;
 }
 
 //Funcion mostrar pedidos a domicilio
@@ -481,13 +496,21 @@ void showOrders()
     for (int i = 0; i < aDelivery.size(); i++)
     {
         cout << "Nombre: " << aDelivery[i].deliveryInfo.name << endl;
-        cout << "Plato principal: " << aDelivery[i].deliveryInfo.pCourse << endl;
-        cout << "Bebida: " << aDelivery[i].deliveryInfo.pDrink << endl;
-        cout << "Aperitivo: " << aDelivery[i].deliveryInfo.pFood << endl;
+        for(int j = 0; j < aDelivery[i].deliveryInfo.pCourse.size(); j++){
+             cout << "Plato principal: " << aDelivery[i].deliveryInfo.pCourse[j] << endl;
+             for(int k = 0; k < aDelivery[i].deliveryInfo.pDrink.size(); k++){
+                cout << "Bebida: " << aDelivery[i].deliveryInfo.pDrink[k] << endl;
+                for(int m = 0; m < aDelivery[i].deliveryInfo.pFood.size(); m++){
+                     cout << "Aperitivo: " << aDelivery[i].deliveryInfo.pFood[m] << endl;
+                }
+             }
+        }
         cout << "Tipo de pago: " << aDelivery[i].deliveryInfo.pay << endl;
         cout << "Monto a pagar: $" << aDelivery[i].deliveryInfo.bill << endl;
+        cout << "Tiempo de espera: " << aDelivery[i].deliveryInfo.time << endl;
         cout << "Numero de orden: " << aDelivery[i].deliveryInfo.idOrder << endl;
     }
+    cout << endl;
 }
 
 //Funcion mostrar pedidos en el restaurante
@@ -497,13 +520,21 @@ void showInOrders()
     {
         cout << "Nombre: " << aRestaurant[i].houseInfo.name << endl;
         cout << "Cantidad de personas en la mesa: " << aRestaurant[i].pTable << endl;
-        cout << "Plato principal: " << aRestaurant[i].houseInfo.pCourse << endl;
-        cout << "Bebida: " << aRestaurant[i].houseInfo.pDrink << endl;
-        cout << "Aperitivo: " << aRestaurant[i].houseInfo.pFood << endl;
+        for(int j = 0; j < aRestaurant[i].houseInfo.pCourse.size(); j++){
+            cout << "Plato principal: " << aRestaurant[i].houseInfo.pCourse[j] << endl;
+            for(int k = 0; k < aRestaurant[i].houseInfo.pDrink.size(); k++){
+                cout << "Bebida: " << aRestaurant[i].houseInfo.pDrink[k] << endl;
+                for(int m = 0; m < aRestaurant[i].houseInfo.pFood.size(); m++){
+                    cout << "Aperitivo: " << aRestaurant[i].houseInfo.pFood[m] << endl;
+                }
+            }
+        }
         cout << "Tipo de pago: " << aRestaurant[i].houseInfo.pay << endl;
         cout << "Monto a pagar: $" << aRestaurant[i].houseInfo.bill << endl;
+        cout << "Tiempo de espera: " << aRestaurant[i].houseInfo.time << endl;
         cout << "Numero de orden: " << aRestaurant[i].houseInfo.idOrder << endl;
     }
+    cout << endl;
 }
 
 //Ambas funciones para mostrar el tiempo estan sobrecargadas
@@ -511,27 +542,29 @@ void showInOrders()
 //Funcion tiempo de espera a domicilio
 void showTime(vector<Delivery> aDelivery)
 {
-    int suma = 0;
+    int sum = 0;
     Delivery aux;
     for (Delivery aux : aDelivery)
     { //foreach solo se puede usar en vectores, accede a un elemento del vector
         //sin tener que recorrer todo el vector
 
-        suma += (aux.deliveryInfo.pCourse * 1.5 + aux.deliveryInfo.pFood * 1.10 + aux.deliveryInfo.pDrink * 1.35) + 15;
-        cout << "El tiempo de espera de su orden es de " << suma << " minutos." << endl;
+        sum += aux.deliveryInfo.time;
+        cout << "El tiempo de espera de su orden es de " << sum << " minutos." << endl;
     }
+    cout << endl;
 }
 
 //Funcion tiempo de espera en el restaurante
 void showTime(vector<Restaurant> aRestaurant)
 {
     Restaurant aux;
-    int suma = 0;
+    int sum = 0;
     for (Restaurant aux : aRestaurant)
     {
-        suma += (aux.houseInfo.pCourse * 1.5 + aux.houseInfo.pFood * 1.10 + aux.houseInfo.pDrink * 1.35);
-        cout << "El tiempo de espera de su orden es de " << suma << " minutos." << endl;
+        sum += aux.houseInfo.time;
+        cout << "El tiempo de espera de su orden es de " << sum << " minutos." << endl;
     }
+    cout << endl;
 }
 
 //Funcion de despacho de ordenes a domicilio
@@ -560,6 +593,7 @@ void packOffDelivery()
         cout << endl;
         i++;
     }
+    cout << endl;
 }
 
 //Funcion de despacho de ordenes en el restaurante
@@ -633,6 +667,7 @@ void cancel()
         if (found == false)
         {
             cout << "No se encontro la orden.\n";
+            return;
         }
     }
 
@@ -668,104 +703,92 @@ void cancel()
     if (found == false)
     {
         cout << "No se encontro la orden.\n";
+        return;
     }
+    cout << endl;
 }
 
 //Funcion recursiva para ver el total de ventas
-//Esto se arregla con tres funciones extra de fors para ir recorriedno los vectores de comida, bebida y entrada
-//A la funcion de ventas le vas a sumar cada funcion extra que hiciste mas la llamada recursiva de totalSales, same shit para la otra
-float totalSales(int op, int pos)
-{
-    float sub = 0;
-
-    if (pos == aux1.size())
+float totalSales(int op, int pos){
+    if (pos == aDelivery.size())
         return 0;
-    else
-    {
-        switch (aux1[pos].deliveryInfo.pCourse)
-        {
-        case pizza:
-            sub += 13.99;
-            break;
-        case pasta:
-            sub += 5.55;
-            break;
-        case lasagna:
-            sub += 6.25;
-            break;
-        }
-        switch (aux1[pos].deliveryInfo.pFood)
-        {
-        case garlicBread:
-            sub += 3.99;
-            break;
-        case cheeseSticks:
-            sub += 3.75;
-            break;
-        case pizzaRolls:
-            sub += 4.99;
-            break;
-        }
-        switch (aux1[pos].deliveryInfo.pDrink)
-        {
-        case icedTea:
-            sub += 1.15;
-            break;
-        case soda:
-            sub += 0.95;
-            break;
-        case beer:
-            sub += 1.99;
-            break;
-        }
-        return sub + totalSales(op, pos + 1) + ((sub + totalSales(op, pos + 1)) * 0.13);
+    else{
+        return totalStarter(aDelivery.at(pos).deliveryInfo.pFood) + totalDish(aDelivery.at(pos).deliveryInfo.pCourse) + totalDrink(aDelivery.at(pos).deliveryInfo.pDrink);
     }
+    cout << endl;   
 }
 
 //Funciion total de ventas en restaurante
 float TotalSales(int op, int pos)
 {
-    float sub = 0;
-    if (pos == aux2.size())
+    if (pos == aRestaurant.size())
         return 0;
     else
     {
-        switch (aux2[pos].houseInfo.pCourse)
-        {
-        case pizza:
-            sub += 13.99;
-            break;
-        case pasta:
-            sub += 5.55;
-            break;
-        case lasagna:
-            sub += 6.25;
-            break;
-        }
-        switch (aux2[pos].houseInfo.pFood)
-        {
+        return totalStarter(aRestaurant.at(pos).houseInfo.pFood) + totalDish(aRestaurant.at(pos).houseInfo.pCourse) + totalDrink(aRestaurant.at(pos).houseInfo.pDrink);
+
+    }
+    cout << endl;
+}
+
+
+//Funcion que suma las ventas de aperitivo
+float totalStarter(vector<food> pFood){
+    float total = 0;
+    for(int i = 0; i < pFood.size(); i++){
+        switch (pFood.size()){
         case garlicBread:
-            sub += 3.99;
+            total += 3.99;
             break;
         case cheeseSticks:
-            sub += 3.75;
+            total += 3.75;
             break;
         case pizzaRolls:
-            sub += 4.99;
+            total += 4.99;
             break;
         }
-        switch (aux2[pos].houseInfo.pDrink)
+    }
+    return total + totalStarter(pFood);
+}
+
+//Funcion que suma las ventas de plato principal
+float totalDish(vector<mainCourse> pCourse){
+    float total = 0;
+    for(int i = 0; i < pCourse.size(); i++){
+        switch (pCourse.size())
+        {
+        case pizza:
+            total += 13.99;
+            break;
+        case pasta:
+            total += 5.55;
+            break;
+        case lasagna:
+            total += 6.25;
+            break;
+    }
+    return total + totalDish(pCourse);
+    }
+ } 
+
+//Funcion que suma las ventas de las bebidas
+float totalDrink(vector<drink> pDrink){
+    float total = 0;
+    for(int i = 0; i < pDrink.size(); i++){
+        switch (pDrink.size())
         {
         case icedTea:
-            sub += 1.15;
+            total += 1.15;
             break;
         case soda:
-            sub += 0.95;
+            total += 0.95;
             break;
         case beer:
-            sub += 1.99;
+            total += 1.99;
             break;
         }
-        return sub + totalSales(op, pos + 1) + ((sub + totalSales(op, pos + 1)) * 0.13);
     }
+    return total + totalDrink(pDrink);
 }
+    
+    
