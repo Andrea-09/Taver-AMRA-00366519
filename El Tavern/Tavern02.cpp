@@ -1,5 +1,6 @@
 
 //Agregar el 13% de IVA
+//Arregla el tiempo bien
 #include <iostream>  //Entrada y salida en consola
 #include <string>    //Permite el uso de strings
 #include <vector>    //Permite el uso de vectores sin necesidad de inicializar los nodos desde cero
@@ -357,7 +358,7 @@ void restaurant()
     cin >> order.houseInfo.bill;
     cin.ignore();
 
-    order.houseInfo.time += (order.houseInfo.pCourse.size() * 1.5 + order.houseInfo.pFood.size() * 1.10 + order.houseInfo.pDrink.size() * 1.35);
+    order.houseInfo.time = (order.houseInfo.pCourse.size() * 1.5 + order.houseInfo.pFood.size() * 1.10 + order.houseInfo.pDrink.size() * 1.35);
     cout << "El tiempo que se tarda es de " << order.houseInfo.time << " minutos.";
 
     aRestaurant.push_back(order);
@@ -483,7 +484,7 @@ void domicilio()
     cin >> order.deliveryInfo.bill;
     cin.ignore();
 
-    order.deliveryInfo.time += ((order.deliveryInfo.pCourse.size() * 1.5 + order.deliveryInfo.pFood.size() * 1.10 + order.deliveryInfo.pDrink.size() * 1.35) + 15);
+    order.deliveryInfo.time = ((order.deliveryInfo.pCourse.size() * 1.5 + order.deliveryInfo.pFood.size() * 1.10 + order.deliveryInfo.pDrink.size() * 1.35) + 15);
     cout << "El tiempo que se tarda es de " << order.deliveryInfo.time << " minutos.";
 
     aDelivery.push_back(order);
@@ -558,7 +559,7 @@ void showTime(vector<Delivery> aDelivery)
         //sin tener que recorrer todo el vector
 
         sum += aux.deliveryInfo.time;
-        cout << "El tiempo de espera de su orden es de " << sum << " minutos." << endl;
+        cout << "El tiempo de espera de las ordenes es de " << sum << " minutos." << endl;
     }
     cout << endl;
 }
@@ -571,7 +572,7 @@ void showTime(vector<Restaurant> aRestaurant)
     for (Restaurant aux : aRestaurant)
     {
         sum += aux.houseInfo.time;
-        cout << "El tiempo de espera de su orden es de " << sum << " minutos." << endl;
+        cout << "El tiempo de espera de las ordenes es de " << sum << " minutos." << endl;
     }
     cout << endl;
 }
@@ -760,7 +761,7 @@ float totalStarter(vector<food> pFood)
             break;
         }
     }
-    cout << total << endl;
+    cout << "$" << total << endl;
     return total;
 }
 
