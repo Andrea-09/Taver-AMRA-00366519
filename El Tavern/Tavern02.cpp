@@ -142,6 +142,7 @@ int main()
         showMenu();
         cin >> opcion;
         cin.ignore();
+        cout << endl;
 
         switch (opcion)
         {
@@ -228,6 +229,7 @@ bool logInUser(void)
             cout << "Contraseña incorrecta" << endl;
         }
         break;
+        cout << endl;
 
     case 'e':
     case 'E':
@@ -236,6 +238,7 @@ bool logInUser(void)
         break;
     }
     return false;
+    cout << endl;
 }
 
 void showMenu(void)
@@ -373,7 +376,7 @@ void domicilio()
 
     cout << "Nombre de la persona que realizo el pedido: ";
     getline(cin, order.deliveryInfo.name);
-    cout << "Direccion \t";
+    cout << "Direccion " << endl;
     cout << "Colonia: \t";
     getline(cin, order.deliveryAddress.street);
     cout << endl;
@@ -402,7 +405,7 @@ void domicilio()
         cout << pricePizzaRolls << endl;
         cout << "0. Salir\t";
 
-        cout << "ingrese su opcion: \t";
+        cout << "Ingrese su opcion: \t";
         cin >> aux;
 
         if (aux == 0)
