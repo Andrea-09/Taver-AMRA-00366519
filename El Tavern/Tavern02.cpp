@@ -1,5 +1,4 @@
 
-//Arregla el tiempo bien
 #include <iostream>  //Entrada y salida en consola
 #include <string>    //Permite el uso de strings
 #include <vector>    //Permite el uso de vectores sin necesidad de inicializar los nodos desde cero
@@ -99,8 +98,10 @@ void showTime(vector<Restaurant> aRestaurant);
 void packOffDelivery();
 //Prototitpo de funcion de despacho de ordenes en el restaurante
 void packOffHouse();
-//Prototipo de funcion para cancelar ordenes
-void cancel();
+//Prototipo de funcion para cancelar ordenes en restaurante
+void cancel(vector<Restaurant> aRestaurant);
+//Prototipo de funcion para cancelar ordenes en domicilio
+void cancel(vector<Delivery> aDelivery);
 //Prototipo de funcion para ver el total de ventas
 float totalSales(int pos);
 //Prototipo de funcion para ver total de ventas en restaurante
@@ -176,7 +177,17 @@ int main()
                 cout << "No se puede acceder a esta opcion." << endl;
             else
             {
-                cancel(); //Esta solo la va a poder ver el admnistrador
+                 int option;
+                 int ID;
+                 cout << "Desea cancelar una orden en restaurante o a domicilio? (1 = restaurante y 2 = domicilio)\t";
+                 cin >> option;
+                 cin.ignore();
+                 cout << endl;
+                 if(option == 1)
+                    cancel(aRestaurant); //Esta solo la va a poder ver el admnistrador
+
+                else
+                    cancel(aDelivery);
             }
             break;
         case 10:
@@ -637,20 +648,11 @@ void packOffHouse()
 }
 
 // Funcion para cancelar una orden
-void cancel()
+void cancel(vector<Restaurant> aRestaurant)
 {
-    int option;
-    int ID;
-    int confirm;
+    int confirm, ID;
     bool found = true;
 
-    cout << "Desea cancelar una orden en restaurante o a domicilio? (1 = restaurante y 2 = domicilio)\t";
-    cin >> option;
-    cin.ignore();
-    cout << endl;
-
-    if (option == 1)
-    {
         cout << "Ingrese el ID de la orden que desea eliminar: ";
         cin >> ID;
         cin.ignore();
@@ -684,9 +686,10 @@ void cancel()
         }
     }
 
-    else if (option == 2)
-    {
-        cout << "Ingrese el ID de la orden que desea eliminar: ";
+void cancel(vector<Delivery> aDelivery){
+    int confirm, ID;
+    bool found = true;
+   cout << "Ingrese el ID de la orden que desea eliminar: ";
         cin >> ID;
         cin.ignore();
         cout << endl;
@@ -712,7 +715,6 @@ void cancel()
                 }
             }
         }
-    }
     if (found == false)
     {
         cout << "No se encontro la orden.\n";
@@ -720,6 +722,7 @@ void cancel()
     }
     cout << endl;
 }
+
 
 //Funcion recursiva para ver el total de ventas
 float totalSales(int pos)
