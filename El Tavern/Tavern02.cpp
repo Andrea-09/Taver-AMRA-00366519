@@ -52,7 +52,7 @@ struct mainInfo
     paymentType pay;
     int idOrder;
     float bill;
-    int time;
+    float time;
 };
 typedef struct mainInfo MainInfo;
 
@@ -276,7 +276,7 @@ void showMenu(void)
 void restaurant()
 {
     Restaurant order;
-
+    
     int aux = 0;
     cout << "Nombre: ";
     getline(cin, order.houseInfo.name);
@@ -377,6 +377,7 @@ void restaurant()
     cin.ignore();
 
     order.houseInfo.time = (order.houseInfo.pCourse.size() * 1.5 + order.houseInfo.pFood.size() * 1.10 + order.houseInfo.pDrink.size() * 1.35);
+    ceil(order.houseInfo.time);
     cout << "El tiempo que se tarda es de " << order.houseInfo.time << " minutos." << endl;
 
     aRestaurant.push_back(order);
@@ -504,6 +505,7 @@ void domicilio()
     cin.ignore();
 
     order.deliveryInfo.time = ((order.deliveryInfo.pCourse.size() * 1.5 + order.deliveryInfo.pFood.size() * 1.10 + order.deliveryInfo.pDrink.size() * 1.35) + 15);
+    ceil(order.deliveryInfo.time);
     cout << "El tiempo que se tarda es de " << order.deliveryInfo.time << " minutos.";
 
     aDelivery.push_back(order);
@@ -571,13 +573,15 @@ void showInOrders()
 //Funcion tiempo de espera a domicilio
 void showTime(vector<Delivery> aDelivery)
 {
-    int sum = 0;
+    float sum = 0;
+
     Delivery aux;
     for (Delivery aux : aDelivery)
     { //foreach solo se puede usar en vectores, accede a un elemento del vector
         //sin tener que recorrer todo el vector
 
         sum += aux.deliveryInfo.time;
+        ceil(sum);
         cout << "El tiempo de espera de las ordenes es de " << sum << " minutos." << endl;
     }
     cout << endl;
@@ -587,10 +591,11 @@ void showTime(vector<Delivery> aDelivery)
 void showTime(vector<Restaurant> aRestaurant)
 {
     Restaurant aux;
-    int sum = 0;
+    float sum = 0;
     for (Restaurant aux : aRestaurant)
     {
         sum += aux.houseInfo.time;
+        ceil(sum);
         cout << "El tiempo de espera de las ordenes es de " << sum << " minutos." << endl;
     }
     cout << endl;
