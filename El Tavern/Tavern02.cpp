@@ -156,9 +156,11 @@ int main()
             break;
         case 3:
             showOrders();
+            cout << endl;
             break;
         case 4:
             showInOrders();
+            cout << endl;
             break;
         case 5:
             packOffDelivery();
@@ -178,13 +180,13 @@ int main()
             else
             {
                  int option;
-                 int ID;
+        
                  cout << "Desea cancelar una orden en restaurante o a domicilio? (1 = restaurante y 2 = domicilio)\t";
                  cin >> option;
                  cin.ignore();
                  cout << endl;
                  if(option == 1)
-                    cancel(aRestaurant); //Esta solo la va a poder ver el admnistrador
+                   cancel(aRestaurant); //Esta solo la va a poder ver el admnistrador
 
                 else
                     cancel(aDelivery);
@@ -303,6 +305,7 @@ void restaurant()
         aux--;
 
         order.houseInfo.pFood.push_back(food(aux));
+        aux++;
 
     } while (aux != 0);
 
@@ -326,6 +329,7 @@ void restaurant()
         aux--;
 
         order.houseInfo.pCourse.push_back(mainCourse(aux));
+        aux++;
 
     } while (aux != 0);
 
@@ -349,6 +353,7 @@ void restaurant()
         aux--;
 
         order.houseInfo.pDrink.push_back(drink(aux));
+        aux++;
 
     } while (aux != 0);
 
@@ -647,29 +652,29 @@ void packOffHouse()
     }
 }
 
-// Funcion para cancelar una orden
-void cancel(vector<Restaurant> aRestaurant)
-{
-    int confirm, ID;
+//Funciones sobre cargadas
+// Funcion para cancelar una orden en restaurante
+void cancel(vector<Restaurant> aRestaurant){
+    string aName;
+    int confirm;
     bool found = true;
 
-        cout << "Ingrese el ID de la orden que desea eliminar: ";
-        cin >> ID;
-        cin.ignore();
+        cout << "Ingrese el nombre de la orden que desea eliminar: ";
+        getline(cin, aName);
         cout << endl;
         for (int i = 0; i < aRestaurant.size(); i++)
         {
-            if (aRestaurant[i].houseInfo.idOrder == ID)
+            if (aRestaurant[i].houseInfo.name == aName)
             {
                 found = true;
-                cout << "Desea eliminar esta orden? (1 = si, 2 = no)\n";
+                cout << "Seguro que desea eliminar esta orden? (1 = si, 2 = no)\n";
                 cin >> confirm;
                 cin.ignore();
                 if (confirm == 1)
                 {
                     for (auto iter = aRestaurant.begin(); iter != aRestaurant.end(); ++iter)
                     {
-                        if (iter->houseInfo.idOrder == ID)
+                        if (iter->houseInfo.name == aName)
                         {
                             iter = aRestaurant.erase(iter);
                             cout << "La orden ha sido eliminada.\n";
@@ -677,6 +682,7 @@ void cancel(vector<Restaurant> aRestaurant)
                         }
                     }
                 }
+                else{}
             }
         }
         if (found == false)
@@ -686,16 +692,18 @@ void cancel(vector<Restaurant> aRestaurant)
         }
     }
 
+//Funcion para cancelar una orden a domicilio
 void cancel(vector<Delivery> aDelivery){
-    int confirm, ID;
+    string aName;
+    int confirm;
     bool found = true;
-   cout << "Ingrese el ID de la orden que desea eliminar: ";
-        cin >> ID;
+   cout << "Ingrese el nombre de la orden que desea eliminar: ";
+        getline(cin, aName);
         cin.ignore();
         cout << endl;
         for (int i = 0; i < aDelivery.size(); i++)
         {
-            if (aDelivery[i].deliveryInfo.idOrder == ID)
+            if (aDelivery[i].deliveryInfo.name == aName)
             {
                 found = true;
                 cout << "Desea eliminar esta orden? (1 = si, 2 = no)\n";
@@ -705,7 +713,7 @@ void cancel(vector<Delivery> aDelivery){
                 {
                     for (auto iter = aDelivery.begin(); iter != aDelivery.end(); ++iter)
                     {
-                        if (iter->deliveryInfo.idOrder == ID)
+                        if (iter->deliveryInfo.name == aName)
                         {
                             iter = aDelivery.erase(iter);
                             cout << "La orden ha sido eliminada.\n";
@@ -713,6 +721,7 @@ void cancel(vector<Delivery> aDelivery){
                         }
                     }
                 }
+                else{}
             }
         }
     if (found == false)
@@ -731,6 +740,7 @@ float totalSales(int pos)
         return 0;
     else
     {
+        cout << "$";
         return totalStarter(aux1.at(pos).deliveryInfo.pFood) + totalDish(aux1.at(pos).deliveryInfo.pCourse) + totalDrink(aux1.at(pos).deliveryInfo.pDrink) + totalSales(pos + 1);
     }
     cout << endl;
@@ -742,7 +752,8 @@ float TotalSales(int pos)
     if (pos == aux2.size())
         return 0;
     else
-    {
+    {   
+        cout << "$";
         return totalStarter(aux2.at(pos).houseInfo.pFood) + totalDish(aux2.at(pos).houseInfo.pCourse) + totalDrink(aux2.at(pos).houseInfo.pDrink) + TotalSales(pos + 1);
     }
     cout << endl;
