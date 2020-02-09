@@ -378,8 +378,8 @@ void restaurant()
     cin.ignore();
 
     order.houseInfo.time = (order.houseInfo.pCourse.size() * 1.5 + order.houseInfo.pFood.size() * 1.10 + order.houseInfo.pDrink.size() * 1.35);
-    ceil(order.houseInfo.time);
-    cout << "El tiempo que se tarda es de " << order.houseInfo.time << " minutos." << endl;
+    float result = ceil(order.houseInfo.time);
+    cout << "El tiempo que se tarda es de " << result << " minutos." << endl;
 
     aRestaurant.push_back(order);
     cout << endl;
@@ -507,8 +507,8 @@ void domicilio()
     cin.ignore();
 
     order.deliveryInfo.time = ((order.deliveryInfo.pCourse.size() * 1.5 + order.deliveryInfo.pFood.size() * 1.10 + order.deliveryInfo.pDrink.size() * 1.35) + 15);
-    ceil(order.deliveryInfo.time);
-    cout << "El tiempo que se tarda es de " << order.deliveryInfo.time << " minutos.";
+    float result = ceil(order.deliveryInfo.time);
+    cout << "El tiempo que se tarda es de " << result << " minutos.";
 
     aDelivery.push_back(order);
     cout << endl;
