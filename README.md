@@ -50,6 +50,7 @@
 
 ### Ver órdenes en restaurante
 |Descripción |	Excelente |	Muy bueno |	Bueno |	Regular |	Malo |
+| --- | --- | --- | --- | --- | --- |
 |Se muestran todas las entradas solicitadas | --- | --- | --- | --- | --- |			
 |Se muestran todas las bebidas solicitadas	| --- | --- | --- | --- | --- |			
 |Se muestran todos los platos solicitados	| --- | --- | --- | --- | --- |				
@@ -65,9 +66,10 @@
 
 
 ### Despachar órdenes a restaurante
-Descripción	Excelente	Muy bueno	Bueno	Regular	Malo
-La orden a despachar se guarda en otra estructura					
-La orden a despachar se elimina de la estructura principal					
+|Descripción |	Excelente |	Muy bueno |	Bueno |	Regular |	Malo |
+| --- | --- | --- | --- | --- | --- |
+|La orden a despachar se guarda en otra estructura | --- | --- | --- | --- | --- |					
+|La orden a despachar se elimina de la estructura principal	 | --- | --- | --- | --- | --- |				
 
 
 ### Ver tiempo de espera promedio
