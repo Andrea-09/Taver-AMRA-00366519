@@ -1,16 +1,19 @@
 #Pizzería El Tavern: Green Hill
 Sumario
+
 1.Requisitos de evaluación
 *Sobrecarga de funciones
 *Enumeraciones
 *Recursividad
 *Registros y subregistros
 *Listas, pilas, colas
+
 2.Criterios de evaluación
 *Funcionalidad del programa
 *Presentación
 *Exposición
 *Extra
+
 ##Requisitos de evaluación
 Requisito	Cumple	No cumple
 Sobrecarga de funciones		
@@ -18,7 +21,8 @@ Enumeraciones
 Recursividad		
 Registros y subregistros		
 Listas, pilas, colas		
-Extra: estructuras dinámicas de cero		
+Extra: estructuras dinámicas de cero
+		
 ###Criterios de evaluación
 Agregar órdenes a domicilio
 Descripción	Excelente	Muy bueno	Bueno	Regular	Malo

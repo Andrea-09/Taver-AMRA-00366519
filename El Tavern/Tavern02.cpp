@@ -200,6 +200,7 @@ int main()
             {
                 cout << "$" << ( totalSales(0) + (totalSales(0) * 0.13)) << endl;
             }
+
             else
             {
                 cout << "$" << ( TotalSales(0) + (TotalSales(0) * 0.13)) << endl;
@@ -528,7 +529,7 @@ void showOrders()
         cout << "Municipio: " << aDelivery[i].deliveryAddress.city << endl;
         cout << "Colonia: " << aDelivery[i].deliveryAddress.street << endl;
         cout << "No. de casa: " << aDelivery[i].deliveryAddress.houseNumber << endl;
-        cout << "No. de casa: " << aDelivery[i].cellphone << endl;
+        cout << "No. de telefono: " << aDelivery[i].cellphone << endl;
         cout << "Tipo de pago: " << aDelivery[i].deliveryInfo.pay << endl;
         cout << "Monto a pagar: $" << aDelivery[i].deliveryInfo.bill << endl;
         cout << "Tiempo de espera: " << aDelivery[i].deliveryInfo.time << endl;
@@ -599,8 +600,8 @@ void showTime(vector<Delivery> aDelivery)
         //sin tener que recorrer todo el vector
 
         sum += aux.deliveryInfo.time;
-        ceil(sum);
-        cout << "El tiempo de espera de las ordenes es de " << sum << " minutos." << endl;
+        float result = ceil(sum);
+        cout << "El tiempo de espera de las ordenes es de " << result << " minutos." << endl;
     }
     cout << endl;
 }
@@ -614,8 +615,8 @@ void showTime(vector<Restaurant> aRestaurant)
     for (Restaurant aux : aRestaurant)
     {
         sum += aux.houseInfo.time;
-        ceil(sum);
-        cout << "El tiempo de espera de las ordenes es de " << sum << " minutos." << endl;
+        float result = ceil(sum);
+        cout << "El tiempo de espera de las ordenes es de " << result << " minutos." << endl;
     }
     cout << endl;
 }
@@ -642,7 +643,7 @@ void packOffDelivery()
         cout << "Pedidos actuales: ";
         for (int i = 0; i < aDelivery.size(); i++)
         {
-            cout << aDelivery[i].deliveryInfo.name << "  ";
+            cout << aDelivery.at(i).deliveryInfo.name << "  ";
         }
         cout << endl;
         i++;
@@ -672,7 +673,7 @@ void packOffHouse()
         cout << "Pedidos actuales: ";
         for (int i = 0; i < aRestaurant.size(); i++)
         {
-            cout << aRestaurant[i].houseInfo.name << "  ";
+            cout << aRestaurant.at(i).houseInfo.name << "  ";
         }
         cout << endl;
     }
@@ -767,7 +768,6 @@ float TotalSales(int pos)
         return 0;
     else
     {   
-        cout << "Total: $";
         return totalStarter(aux2.at(pos).houseInfo.pFood) + totalDish(aux2.at(pos).houseInfo.pCourse) + totalDrink(aux2.at(pos).houseInfo.pDrink) + TotalSales(pos + 1);
     }
     cout << endl;
