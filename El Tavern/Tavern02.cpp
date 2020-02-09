@@ -198,7 +198,7 @@ int main()
             cin.ignore();
             if (op == 1)
             {
-                cout << "$" << ( totalSales(0) + (totalSales(0) * 0.13)) << endl;
+                cout << "$" << (totalSales(0) + (totalSales(0) * 0.13)) << endl;
             }
 
             else
@@ -531,8 +531,10 @@ void showOrders()
         cout << "No. de casa: " << aDelivery[i].deliveryAddress.houseNumber << endl;
         cout << "No. de telefono: " << aDelivery[i].cellphone << endl;
         cout << "Tipo de pago: " << aDelivery[i].deliveryInfo.pay << endl;
-        cout << "Monto a pagar: $" << aDelivery[i].deliveryInfo.bill << endl;
-        cout << "Tiempo de espera: " << aDelivery[i].deliveryInfo.time << endl;
+        float result = (aDelivery[i].deliveryInfo.bill + (aDelivery[i].deliveryInfo.bill * 0.13));
+        cout << "Monto a pagar: $" << result << endl;
+        float time = ceil(aDelivery[i].deliveryInfo.time);
+        cout << "Tiempo de espera: " << time << endl;
         cout << "Numero de orden: " << aDelivery[i].deliveryInfo.idOrder << endl;
 
         for (int j = 0; j < aDelivery[i].deliveryInfo.pCourse.size(); j++)
@@ -565,8 +567,10 @@ void showInOrders()
         cout << "Nombre: " << aRestaurant[i].houseInfo.name << endl;
         cout << "Cantidad de personas en la mesa: " << aRestaurant[i].pTable << endl;
         cout << "Tipo de pago: " << aRestaurant[i].houseInfo.pay << endl;
-        cout << "Monto a pagar: $" << aRestaurant[i].houseInfo.bill << endl;
-        cout << "Tiempo de espera: " << aRestaurant[i].houseInfo.time << endl;
+        float result = (aRestaurant[i].houseInfo.bill + (aRestaurant[i].houseInfo.bill * 0.13));
+        cout << "Monto a pagar: $" << result << endl;
+        float time = ceil(aRestaurant[i].houseInfo.time);
+        cout << "Tiempo de espera: " << time << endl;
         cout << "Numero de orden: " << aRestaurant[i].houseInfo.idOrder << endl;
 
         for (int j = 0; j < aRestaurant[i].houseInfo.pCourse.size(); j++)
