@@ -291,10 +291,10 @@ void restaurant()
         cout << "****Entrada****" << endl;
         cout << "1. Pan con ajo\t";
         cout << priceGarlicBread << endl;
-        cout << "2. Pizza rolls\t";
-        cout << pricePizzaRolls << endl;
-        cout << "3. Palitos de queso\t";
+        cout << "2. Palitos de queso\t";
         cout << priceCheeseSticks << endl;
+        cout << "3. Pizza rolls\t";
+        cout << pricePizzaRolls << endl;
         cout << "0. Salir\t" << endl;
         cout << "Su opcion: \t";
         cin >> aux;
