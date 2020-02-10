@@ -706,6 +706,7 @@ void cancel(vector<Restaurant>& aRestaurant){
                 if (confirm == 1)
                 {
                     iter = aRestaurant.erase(iter);
+                    cout << "La orden ha sido cancelada." << endl;
                     break;
                 }
             }
@@ -738,6 +739,7 @@ void cancel(vector<Delivery>& aDelivery){
             if (confirm == 1)
             {
                 iter = aDelivery.erase(iter);
+                cout << "La orden ha sido cancelada." << endl;
                 break;
             }
         }
@@ -758,6 +760,8 @@ float totalSales(int pos)
         return 0;
     else
     {
+        cout << "-------------------------------";
+        cout << "\n***Total de ventas a domicilio***\n";
         cout << "Total: $";
         return totalStarter(aux1.at(pos).deliveryInfo.pFood) + totalDish(aux1.at(pos).deliveryInfo.pCourse) + totalDrink(aux1.at(pos).deliveryInfo.pDrink) + totalSales(pos + 1);
     }
@@ -772,6 +776,9 @@ float TotalSales(int pos)
         return 0;
     else
     {   
+        cout << "-------------------------------";
+        cout << "\n***Total de ventas en restaurante***\n";
+        cout << "Total: $";
         return totalStarter(aux2.at(pos).houseInfo.pFood) + totalDish(aux2.at(pos).houseInfo.pCourse) + totalDrink(aux2.at(pos).houseInfo.pDrink) + TotalSales(pos + 1);
     }
     cout << endl;
